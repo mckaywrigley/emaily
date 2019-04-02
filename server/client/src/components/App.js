@@ -1,11 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-
-const Header = () => {
-    return (
-        <h2>Header</h2>
-    );
-}
+import { connect } from 'react-redux';
+import * as actions from '../actions';
+import Header from './Header';
 
 const Dashboard = () => {
     return (
@@ -26,13 +23,19 @@ const Landing = () => {
 }
 
 class App extends React.Component {
+    componentDidMount(){
+      this.props.fetchUser();
+    }
+    
+
     render() {
         return (
-            <div>
+            <div className="container">
+            <Header />
                 <BrowserRouter>
-                    <Route path="/" component={Landing} />
-                    <Route path="/dashboard" component={Dashboard} />
-                    <Route path="/survey/new" component={SurveyNew} />
+                    <Route exact path="/" component={Landing} />
+                    <Route exact path="/surveys" component={Dashboard} />
+                    <Route path="/surveys/new" component={SurveyNew} />
                     <Route path="/header" component={Header} />
                 </BrowserRouter>
             </div>
@@ -40,4 +43,7 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default connect(
+    null,
+    actions 
+)(App);
